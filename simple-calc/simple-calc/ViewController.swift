@@ -39,9 +39,11 @@ class ViewController: UIViewController {
             opSelected = false
             newOp = false
         }
+        // update screen output
         output.text = output.text! + String(sender.tag - 1)
     }
     
+    // records decimal operation
     @IBAction func decimal(_ sender: UIButton) {
         if (!decimal) {
             output.text = output.text! + String(".")
@@ -49,11 +51,13 @@ class ViewController: UIViewController {
         }
     }
     
+    // clears the screen and resets starter variables
     @IBAction func clearPressed(_ sender: UIButton) {
         output.text = ""
         clear()
     }
     
+    // records operation
     @IBAction func operation(_ sender: UIButton) {
         if !opSelected {
             prev = Double(output.text!)!
@@ -63,6 +67,7 @@ class ViewController: UIViewController {
         }
     }
     
+    // records the factorial operation
     @IBAction func factPressed(_ sender: UIButton) {
         if !opSelected {
             opSelected = true
@@ -72,6 +77,7 @@ class ViewController: UIViewController {
         input.append(Double(output.text!)!)
     }
     
+    // evaluates the factorial operation
     func evalFact() -> String {
         if input.count > 1 {
             return String("Error!")
@@ -85,6 +91,7 @@ class ViewController: UIViewController {
         }
     }
     
+    // records count and appends the number to input
     @IBAction func countPressed(_ sender: UIButton) {
         if !opSelected {
             opSelected = true
@@ -94,6 +101,7 @@ class ViewController: UIViewController {
         input.append(Double(output.text!)!)
     }
     
+    // records avg operation and appends the number to input
     @IBAction func avgPressed(_ sender: UIButton) {
         if !opSelected {
             opSelected = true
@@ -103,6 +111,7 @@ class ViewController: UIViewController {
         input.append(Double(output.text!)!)
     }
     
+    // computes the average of the elements in input
     func computeAvg() -> String {
         var sum = 0.0
         for i in input {
@@ -111,6 +120,7 @@ class ViewController: UIViewController {
         return "" + String(sum / Double(input.count))
     }
     
+    // displays a decimal / int based on whether or not decimal has been selected
     func displayResult(_ result: String) {
         if result != "" && result != "Error!" {
             if (decimal) {
@@ -122,6 +132,7 @@ class ViewController: UIViewController {
         }
     }
     
+    // evaluates the expression so far
     @IBAction func equalsPressed(_ sender: UIButton) {
         var result = ""
         if output.text != "" {
@@ -153,6 +164,7 @@ class ViewController: UIViewController {
         clear()
     }
     
+    // resets the starter variables
     func clear() {
         prev = 0.0
         curr = 0.0
@@ -162,6 +174,5 @@ class ViewController: UIViewController {
         input = [Double]()
         newOp = true
     }
-    
 }
 
