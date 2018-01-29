@@ -25,6 +25,7 @@ class ViewController: UIViewController {
     var opSelected = false
     var operation = ""
     var newOp = false
+    var decimal = false
     var input = [Double]()
     
     
@@ -39,6 +40,13 @@ class ViewController: UIViewController {
             newOp = false
         }
         output.text = output.text! + String(sender.tag - 1)
+    }
+    
+    @IBAction func decimal(_ sender: UIButton) {
+        if (!decimal) {
+            output.text = output.text! + String(".")
+            decimal = true
+        }
     }
     
     @IBAction func clearPressed(_ sender: UIButton) {
@@ -64,16 +72,16 @@ class ViewController: UIViewController {
         input.append(Double(output.text!)!)
     }
     
-    func evalFact() {
+    func evalFact() -> String {
         if input.count > 1 {
-            output.text = String("Error!")
+            return String("Error!")
         } else {
             let n = Int(input[0])
             var prod = 1
             for i in 1...n {
                 prod *= i
             }
-            output.text = "" + String(prod)
+            return "" + String(prod)
         }
     }
     
@@ -95,41 +103,53 @@ class ViewController: UIViewController {
         input.append(Double(output.text!)!)
     }
     
-    func computeAvg() {
-        var sum = 0
+    func computeAvg() -> String {
+        var sum = 0.0
         for i in input {
-            sum += Int(i)
-            print(sum)
+            sum += i
         }
-        output.text = "" + String(sum / input.count)
+        return "" + String(sum / Double(input.count))
+    }
+    
+    func displayResult(_ result: String) {
+        if result != "" && result != "Error!" {
+            if (decimal) {
+                output.text = result
+            } else {
+                let num = Double(result)
+                output.text = String(Int(num!))
+            }
+        }
     }
     
     @IBAction func equalsPressed(_ sender: UIButton) {
+        var result = ""
         if output.text != "" {
             curr = Double(output.text!)!
             switch operation {
             case "+" :
-                output.text = String(prev + curr)
+                result = String((prev + curr))
             case "-" :
-                output.text = String(prev - curr)
+                result = String((prev - curr))
             case "x" :
-                output.text = String(prev * curr)
+                result = String((prev * curr))
             case "/" :
-                output.text = String(prev / curr)
+                result = String((prev / curr))
             case "%" :
-                output.text = String(prev.truncatingRemainder(dividingBy: curr))
+                result = String(prev.truncatingRemainder(dividingBy: curr))
             case "fact" :
-                evalFact()
+                result = evalFact()
             case "count" :
                 input.append(Double(output.text!)!)
-                output.text = "" + String(input.count)
+                result = "" + String(input.count)
             case "avg" :
                 input.append(Double(output.text!)!)
-                computeAvg()
+                result = computeAvg()
             default :
                 output.text = "Error!"
             }
         }
+        displayResult(result)
         clear()
     }
     
@@ -138,6 +158,7 @@ class ViewController: UIViewController {
         curr = 0.0
         opSelected = false
         operation = ""
+        decimal = false
         input = [Double]()
         newOp = true
     }
